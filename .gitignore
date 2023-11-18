@@ -1,3 +1,23 @@
+## Personal adds
+music.dat 
+data_exploration.ipynb
+*.pt
+
+# big music files
+*.zip.001
+*.zip.002
+*.zip.003
+c/
+d/
+e/
+f/
+coversongs/
+covers80.*
+melbands.dat
+melbands.npy
+
+## Basic Python ignores
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
