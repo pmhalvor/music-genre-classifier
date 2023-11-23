@@ -2,6 +2,8 @@
 music.dat 
 data_exploration.ipynb
 *.pt
+models/
+hide_*
 
 # big music files
 *.zip.001
