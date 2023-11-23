@@ -15,7 +15,7 @@ import requests
 
 
 MTT_URL_BASE = "https://mirg.city.ac.uk/datasets/magnatagatune/mp3.zip.00"
-script = Path(__file__).parent / ".." / ".." / "helpers" / "melspectrogram_extractor.py"
+script = "melspectrogram_extractor.py"
 
 
 def download_mtt(download_dir: Path) -> None:
@@ -51,24 +51,28 @@ def extract_mtt(download_dir: Path, audio_dir: Path) -> None:
                 zip_ref.extractall(audio_dir)
 
 
-def extract_essentia_melspecs(audio_dir: Path, melspec_dir: Path, max_workers: int = 16, force:
-                              bool = False) -> None:
-    """Extract the mel-spectrograms from the MagnaTagATune audio."""
+def extract_essentia_melspecs(
+        audio_dir: Path, 
+        melspec_dir: Path, 
+        max_workers: int = 16, 
+        force: bool = False,
+        fp_structure: str = "**/*.mp3"
+    ) -> None:
+    """Extract mel-spectrograms"""
 
-    mp3_files = glob(str(audio_dir / "**/*.mp3"), recursive=True)
+    audio_files = glob(str(audio_dir / fp_structure), recursive=True)
 
     args = []
-    for mp3_file in mp3_files:
-        mp3_file = Path(mp3_file)
+    for audio_file in audio_files:
+        audio_file = Path(audio_file)
 
-        melspec_file = str((melspec_dir /
-                           mp3_file.relative_to(audio_dir).with_suffix(".mmap")).resolve())
-        mp3_file = str(mp3_file.resolve())
+        melspec_file = str((melspec_dir / audio_file.relative_to(audio_dir).with_suffix(".mmap")).resolve())
+        audio_file = str(audio_file.resolve())
 
         if not force and Path(melspec_file).exists():
             continue
 
-        args.append((sys.executable, script, mp3_file, melspec_file))
+        args.append((sys.executable, script, audio_file, melspec_file))
 
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         tqdm(executor.map(run, args), total=len(args))
