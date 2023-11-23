@@ -1,6 +1,6 @@
 ## Personal adds
 music.dat 
-data_exploration.ipynb
+# data_exploration.ipynb
 *.pt
 models/
 hide_*
