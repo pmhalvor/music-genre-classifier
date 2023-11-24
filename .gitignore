@@ -4,6 +4,7 @@ music.dat
 *.pt
 models/
 hide_*
+logs/
 
 # big music files
 *.zip.001
