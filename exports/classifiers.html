@@ -8024,6 +8024,21 @@ weighted avg       0.50      0.50      0.48       200
 </div>
 </div>
 </div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>We can plot a confusion matrix of our classifitions to show what genres the model struggles with.
+Here, the predicted labels are on the x-axis, and the true labels are on the y-axis.
+The diagonal shows the number of correct predictions, and the off-diagonal elements show the number of incorrect predictions.
+The darker the color, the more predictions there are in that category.
+Note, the dataset has not been stratified, so there is a slight imbalance in the number of samples in each class.</p>
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -9223,32 +9238,22 @@ if (outputEl) {{
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Compare-models">Compare models<a class="anchor-link" href="#Compare-models">¶</a></h1><p>We compare the three optimized models against two criteria: F1-score and training time.</p>
-<h2 id="F1-score">F1-score<a class="anchor-link" href="#F1-score">¶</a></h2><p>The best F1 score measured after tuning belonged to the Support Vector Machine model.</p>
-<p>Using the grid search plots, we can get an idea of the variations of model performance when using different parameters.
-It seems like we were getting close to the optimal value for the Random Forest and SVM models, but not the KNN model.
-The KNN model also refit within less than a second, telling us that there might be something wrong with our training set-up.
-(Or the dataset is too small to get a good fit.)</p>
-<!-- TODO: look into KNN trainer -->
-<p>After fine-tuning, the SVM model still performed the best, with an F1-score of 0.61.
-This is a 0.0311 increase from the default model.
-The difference between the default and optimized KNN model it was 0.0717, while Random Forest saw no increase after the tuning.
-These increases in F1-score are not very large, but it's still an improvement.</p>
-<h2 id="Training-time">Training time<a class="anchor-link" href="#Training-time">¶</a></h2><p>Our fastest model by far is the KNN model, with a training time of 0.006 seconds.
+<h1 id="Compare-models">Compare models<a class="anchor-link" href="#Compare-models">¶</a></h1><p>We compare the three optimized models against two criteria: F1-score and training time.
+F1 score is a balanced measurment of a model's precision and recall, and is a good metric for comparing models when the dataset is imbalanced.
+Our dataset is not initially imbalanced, but our unstratified train-test-split could have introduced some bias.</p>
+<h2 id="F1-score">F1-score<a class="anchor-link" href="#F1-score">¶</a></h2><p>The best F1 score measured after tuning belonged to the Random Forest model, though this varied from run to run, since no random seed was set for initializing the models.</p>
+<p>The grid search plots help us get an idea of the variations of model performance when using different parameters.
+It seems like we were getting close to the optimal values for the Random Forest and SVM models, but not the KNN model.
+The KNN model also refit within less than a second, telling us that the dataset may be too small to train a good KNN model, or there might be some bug in our implementation.</p>
+<p>After fine-tuning, the Random Forest and the SVM models were almost neck-and-neck on F1 and accuracy scores, with Random Forest having the slight edge.
+This jump in performance on the evaluation set tells us that our fine-tuning was successful, and that we did not overfit the model to the test set.
+The KNN model performed better on the evaluation set than it did during the grid search, but still much worse than our other two classifiers.</p>
+<h2 id="Training-time">Training time<a class="anchor-link" href="#Training-time">¶</a></h2><p>Our fastest model by far is the KNN model, with a training time of barely a second.
 The SVM model took ca. 17 seconds to train, while the Random Forest model took 25 seconds.
-Something seems suspicious about the KNN model, as it's training time and score is so much lower than the other models.
-We'll have to look into this later.</p>
-<h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h1><p>Our best scoring traditional ML classifier was the SVM model, with paramters <code>C=10</code> and <code>kernel='rbf'</code>.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+All of these feel incredibly fast compared to typical neural networks.
+This tells us that these models can be very useful in situations where we need to train a model quickly or on a smaller device, or when we have a very large dataset.</p>
+<h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h1><p>The SVM and Random Forest models performed best on the validation set.
+Their light-weight nature and fast training times make them very useful in situations where we have limited computes resources to train on, or large much data.</p>
 </div>
 </div>
 </div>
